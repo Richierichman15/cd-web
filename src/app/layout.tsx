@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import Image from "next/image";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pristine Auto Detailing | Professional Car Detailing Services",
+  title: "Preeminent Car Detailing | Professional Car Detailing Services",
   description: "Premium car detailing services for your vehicle. Book your appointment today and experience the difference.",
 };
 
@@ -31,8 +32,17 @@ export default function RootLayout({
         <header className="sticky top-0 z-10 bg-white shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              <div className="flex-shrink-0 font-bold text-xl text-blue-600">
-                Pristine Auto Detailing
+              <div className="flex-shrink-0 flex items-center space-x-3">
+                <Image
+                  src="/assets/04FE7B3B-BF5F-461A-A6A8-5F3A4C99FB1A.jpeg"
+                  alt="Preeminent Car Detailing Logo"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+                <span className="font-bold text-xl text-blue-600">
+                  Preeminent Car Detailing
+                </span>
               </div>
               <nav className="hidden md:flex space-x-8">
                 <Link href="/" className="text-gray-700 hover:text-blue-600 transition duration-150">Home</Link>
@@ -49,7 +59,7 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex flex-col md:flex-row justify-between">
               <div className="mb-6 md:mb-0">
-                <h3 className="text-lg font-semibold">Pristine Auto Detailing</h3>
+                <h3 className="text-lg font-semibold">Preeminent Car Detailing</h3>
                 <p className="mt-2 text-gray-300">Making your vehicle shine like new</p>
               </div>
               <div>
@@ -61,7 +71,7 @@ export default function RootLayout({
               </div>
             </div>
             <div className="mt-8 border-t border-gray-700 pt-8 text-center text-sm text-gray-400">
-              &copy; {new Date().getFullYear()} Pristine Auto Detailing. All rights reserved.
+              &copy; {new Date().getFullYear()} Preeminent Car Detailing. All rights reserved.
             </div>
           </div>
         </footer>

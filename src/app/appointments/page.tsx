@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
@@ -38,7 +38,8 @@ const vehicleTypes = [
   "Other",
 ];
 
-export default function AppointmentsPage() {
+// This component uses the search params
+function AppointmentForm() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
@@ -321,5 +322,36 @@ export default function AppointmentsPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+// Loading fallback for Suspense
+function AppointmentFormLoading() {
+  return (
+    <div className="bg-white py-16">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            Book Your Appointment
+          </h1>
+          <p className="mt-4 text-lg text-gray-500">
+            Loading appointment form...
+          </p>
+        </div>
+        <div className="animate-pulse space-y-8">
+          <div className="bg-gray-50 shadow rounded-lg p-6 h-40"></div>
+          <div className="bg-gray-50 shadow rounded-lg p-6 h-80"></div>
+          <div className="bg-gray-50 shadow rounded-lg p-6 h-60"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function AppointmentsPage() {
+  return (
+    <Suspense fallback={<AppointmentFormLoading />}>
+      <AppointmentForm />
+    </Suspense>
   );
 } 
