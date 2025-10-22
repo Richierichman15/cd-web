@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preeminent Car Detailing - Debug</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            color: white;
+        }
+        
+        .main-container {
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+        }
+        
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=1080&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .dark-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.3) 0%,
+                rgba(0, 0, 0, 0.4) 50%,
+                rgba(0, 0, 0, 0.6) 100%
+            );
+        }
+        
+        .logo-section {
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo-container {
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .stars {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .star {
+            color: white;
+            font-size: 24px;
+            animation: twinkle 2s infinite;
+        }
+        
+        .star:nth-child(2) { animation-delay: 0.2s; }
+        .star:nth-child(3) { animation-delay: 0.4s; }
+        .star:nth-child(4) { animation-delay: 0.6s; }
+        .star:nth-child(5) { animation-delay: 0.8s; }
+        
+        .car-silhouette {
+            margin: 20px 0;
+        }
+        
+        .car-icon {
+            width: 120px;
+            height: 60px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+        
+        .company-name {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 20px 0;
+        }
+        
+        .tagline-container {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid white;
+            border-radius: 25px;
+            padding: 12px 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            color: white;
+        }
+        
+        .gallery-section {
+            padding: 80px 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 50px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-icon {
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .cta-section {
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .book-now-btn {
+            position: relative;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .book-now-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(135deg, #FFA500, #FFD700, #FF8C00);
+        }
+        
+        .book-now-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .book-now-btn:hover .btn-shine {
+            left: 100%;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        @media (max-width: 768px) {
+            .company-name {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .book-now-btn {
+                padding: 15px 30px;
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .company-name {
+                font-size: 2rem;
+            }
+            
+            .car-icon {
+                width: 100px;
+                height: 50px;
+            }
+            
+            .star {
+                font-size: 20px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .gallery-item img {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="background-overlay">
+            <div class="background-image"></div>
+            <div class="dark-gradient"></div>
+        </div>
+
+        <section class="logo-section" id="home">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="stars">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    
+                    <div class="car-silhouette">
+                        <svg viewBox="0 0 100 50" class="car-icon">
+                            <path d="M20 25 L30 15 L70 15 L80 25 L75 35 L25 35 Z" fill="white" stroke="white" stroke-width="1"/>
+                            <circle cx="25" cy="40" r="5" fill="white"/>
+                            <circle cx="75" cy="40" r="5" fill="white"/>
+                        </svg>
+                    </div>
+                    
+                    <h1 class="company-name">PREEMINENT</h1>
+                    <div class="tagline-container">
+                        <span class="tagline">CAR DETAILING</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="gallery-section" id="gallery">
+            <div class="container">
+                <h2 class="section-title">Our Work</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop" alt="Car Detailing Work" loading="lazy">
+                        <div class="gallery-overlay">
+                            <span class="gallery-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?w=800&h=600&fit=crop" alt="Car Detailing Work" loading="lazy">
+                        <div class="gallery-overlay">
+                            <span class="gallery-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&h=600&fit=crop" alt="Car Detailing Work" loading="lazy">
+                        <div class="gallery-overlay">
+                            <span class="gallery-icon">🔍</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section" id="contact">
+            <div class="container">
+                <button class="book-now-btn" onclick="alert('Book Now clicked!')">
+                    <span class="btn-text">Book Now</span>
+                    <span class="btn-shine"></span>
+                </button>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

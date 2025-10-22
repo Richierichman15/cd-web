@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preeminent Car Detailing | Premium Car Detailing Services</title>
+    <meta name="description" content="Premium car detailing services for your vehicle. Book your appointment today and experience the difference.">
+    
+    <!-- Google Fonts - Poppins for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Container with Full-Screen Background -->
+    <div class="main-container">
+        <!-- Background Image with Dark Overlay -->
+        <div class="background-overlay">
+            <div class="background-image"></div>
+            <div class="dark-gradient"></div>
+        </div>
+
+        <!-- Logo Section - Centered in Top Half -->
+        <section class="logo-section" id="home">
+            <div class="logo-container">
+                <div class="logo">
+                    <!-- Stars -->
+                    <div class="stars">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    
+                    <!-- Car Silhouette -->
+                    <div class="car-silhouette">
+                        <svg viewBox="0 0 100 50" class="car-icon">
+                            <path d="M20 25 L30 15 L70 15 L80 25 L75 35 L25 35 Z" fill="white" stroke="white" stroke-width="1"/>
+                            <circle cx="25" cy="40" r="5" fill="white"/>
+                            <circle cx="75" cy="40" r="5" fill="white"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Company Name -->
+                    <h1 class="company-name">PREEMINENT</h1>
+                    <div class="tagline-container">
+                        <span class="tagline">CAR DETAILING</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="gallery-section" id="gallery">
+            <div class="container">
+                <h2 class="section-title">Our Work</h2>
+                <div class="gallery-grid">
+                    <!-- Gallery items will be populated with JavaScript -->
+                    <div class="gallery-item" data-type="image">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop" alt="Car Detailing Work" loading="lazy">
+                        <div class="gallery-overlay">
+                            <span class="gallery-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-type="image">
+                        <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?w=800&h=600&fit=crop" alt="Car Detailing Work" loading="lazy">
+                        <div class="gallery-overlay">
+                            <span class="gallery-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-type="image">
+                        <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&h=600&fit=crop" alt="Car Detailing Work" loading="lazy">
+                        <div class="gallery-overlay">
+                            <span class="gallery-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-type="image">
+                        <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&h=600&fit=crop" alt="Car Detailing Work" loading="lazy">
+                        <div class="gallery-overlay">
+                            <span class="gallery-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-type="image">
+                        <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&h=600&fit=crop" alt="Car Detailing Work" loading="lazy">
+                        <div class="gallery-overlay">
+                            <span class="gallery-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-type="image">
+                        <img src="https://images.unsplash.com/photo-1617531653332-4b0d0b0b0b0b?w=800&h=600&fit=crop" alt="Car Detailing Work" loading="lazy">
+                        <div class="gallery-overlay">
+                            <span class="gallery-icon">🔍</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="cta-section" id="contact">
+            <div class="container">
+                <button class="book-now-btn" id="bookNowBtn">
+                    <span class="btn-text">Book Now</span>
+                    <span class="btn-shine"></span>
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Book Your Appointment</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Tell us about your vehicle and preferred services..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox-overlay" id="lightboxModal">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="closeLightbox">&times;</button>
+            <button class="lightbox-prev" id="prevBtn">‹</button>
+            <button class="lightbox-next" id="nextBtn">›</button>
+            <img id="lightboxImage" src="" alt="">
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

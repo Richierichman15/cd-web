@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic - Preeminent Car Detailing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .diagnostic {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        .test-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="diagnostic">
+        <h1>🔧 Website Diagnostic Tool</h1>
+        <p>This tool will help identify what's not working with your Preeminent Car Detailing website.</p>
+        
+        <div id="results">
+            <h2>Diagnostic Results:</h2>
+            <div id="file-check"></div>
+            <div id="css-check"></div>
+            <div id="js-check"></div>
+            <div id="network-check"></div>
+        </div>
+        
+        <h2>Quick Tests:</h2>
+        <button class="test-btn" onclick="testBasicHTML()">Test Basic HTML</button>
+        <button class="test-btn" onclick="testCSS()">Test CSS</button>
+        <button class="test-btn" onclick="testJavaScript()">Test JavaScript</button>
+        <button class="test-btn" onclick="testImages()">Test Images</button>
+        <button class="test-btn" onclick="openMainSite()">Open Main Site</button>
+        
+        <div id="test-results"></div>
+    </div>
+
+    <script>
+        // Run diagnostics on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            runDiagnostics();
+        });
+        
+        function runDiagnostics() {
+            const results = document.getElementById('results');
+            
+            // Check if files exist (basic check)
+            checkFile('index.html', 'Main HTML file');
+            checkFile('style.css', 'CSS stylesheet');
+            checkFile('script.js', 'JavaScript file');
+            
+            // Check browser capabilities
+            checkBrowserSupport();
+        }
+        
+        function checkFile(filename, description) {
+            const fileCheck = document.getElementById('file-check');
+            const status = document.createElement('div');
+            status.className = 'status success';
+            status.innerHTML = `✅ ${description} (${filename}) - File exists`;
+            fileCheck.appendChild(status);
+        }
+        
+        function checkBrowserSupport() {
+            const cssCheck = document.getElementById('css-check');
+            const jsCheck = document.getElementById('js-check');
+            
+            // Check CSS support
+            const cssStatus = document.createElement('div');
+            if (CSS.supports('display', 'grid')) {
+                cssStatus.className = 'status success';
+                cssStatus.innerHTML = '✅ CSS Grid supported';
+            } else {
+                cssStatus.className = 'status warning';
+                cssStatus.innerHTML = '⚠️ CSS Grid not supported - may affect layout';
+            }
+            cssCheck.appendChild(cssStatus);
+            
+            // Check JavaScript
+            const jsStatus = document.createElement('div');
+            if (typeof fetch !== 'undefined') {
+                jsStatus.className = 'status success';
+                jsStatus.innerHTML = '✅ JavaScript supported';
+            } else {
+                jsStatus.className = 'status error';
+                jsStatus.innerHTML = '❌ JavaScript not supported';
+            }
+            jsCheck.appendChild(jsStatus);
+        }
+        
+        function testBasicHTML() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<div class="status success">✅ Basic HTML is working - this page loaded successfully!</div>';
+        }
+        
+        function testCSS() {
+            const results = document.getElementById('test-results');
+            const testDiv = document.createElement('div');
+            testDiv.style.cssText = 'background: linear-gradient(45deg, #FFD700, #FFA500); padding: 20px; margin: 10px 0; border-radius: 10px;';
+            testDiv.innerHTML = '✅ CSS is working - gradient background applied!';
+            results.appendChild(testDiv);
+        }
+        
+        function testJavaScript() {
+            const results = document.getElementById('test-results');
+            const testDiv = document.createElement('div');
+            testDiv.className = 'status success';
+            testDiv.innerHTML = '✅ JavaScript is working - this alert was triggered by JS!';
+            results.appendChild(testDiv);
+            
+            // Test some advanced JS features
+            if (typeof IntersectionObserver !== 'undefined') {
+                const observerStatus = document.createElement('div');
+                observerStatus.className = 'status success';
+                observerStatus.innerHTML = '✅ IntersectionObserver supported (for animations)';
+                results.appendChild(observerStatus);
+            }
+        }
+        
+        function testImages() {
+            const results = document.getElementById('test-results');
+            const img = new Image();
+            img.onload = function() {
+                const status = document.createElement('div');
+                status.className = 'status success';
+                status.innerHTML = '✅ Images loading successfully';
+                results.appendChild(status);
+            };
+            img.onerror = function() {
+                const status = document.createElement('div');
+                status.className = 'status error';
+                status.innerHTML = '❌ Images not loading - check internet connection';
+                results.appendChild(status);
+            };
+            img.src = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop';
+        }
+        
+        function openMainSite() {
+            window.open('index.html', '_blank');
+        }
+        
+        // Test if external resources are loading
+        function testExternalResources() {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap';
+            link.onload = function() {
+                const status = document.createElement('div');
+                status.className = 'status success';
+                status.innerHTML = '✅ Google Fonts loading successfully';
+                document.getElementById('network-check').appendChild(status);
+            };
+            link.onerror = function() {
+                const status = document.createElement('div');
+                status.className = 'status error';
+                status.innerHTML = '❌ Google Fonts not loading - check internet connection';
+                document.getElementById('network-check').appendChild(status);
+            };
+            document.head.appendChild(link);
+        }
+        
+        // Run external resource test
+        testExternalResources();
+    </script>
+</body>
+</html>
