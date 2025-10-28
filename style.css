@@ -299,6 +299,206 @@ body {
     animation: modalSlideIn 0.3s ease;
 }
 
+/* Calendar Modal Specific Styles */
+.calendar-modal {
+    max-width: 600px;
+    width: 95%;
+}
+
+.calendar-container {
+    margin-bottom: 20px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.calendar-nav {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-nav:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+#currentMonth {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.calendar-day-header {
+    text-align: center;
+    font-weight: 600;
+    color: #666;
+    padding: 10px 5px;
+    font-size: 0.9rem;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    background: #f8f9fa;
+    color: #333;
+}
+
+.calendar-day:hover {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: white;
+    transform: scale(1.05);
+}
+
+.calendar-day.selected {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: white;
+    border-color: #FF8C00;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.calendar-day.disabled {
+    background: #e9ecef;
+    color: #adb5bd;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.calendar-day.disabled:hover {
+    background: #e9ecef;
+    color: #adb5bd;
+    transform: none;
+}
+
+.calendar-day.other-month {
+    background: transparent;
+    color: #adb5bd;
+}
+
+/* Appointment Details */
+.appointment-details {
+    border-top: 2px solid #f0f0f0;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.selected-date {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 10px;
+}
+
+.selected-date h4 {
+    color: #333;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.appointment-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.back-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.back-btn:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.continue-btn {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 2;
+}
+
+.continue-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+}
+
+.continue-btn:disabled {
+    background: #adb5bd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Appointment Summary */
+.appointment-summary {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid #FFD700;
+}
+
+.appointment-summary h4 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.summary-item {
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.summary-item strong {
+    color: #333;
+}
+
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -507,6 +707,42 @@ body {
     .modal-content {
         margin: 20px;
         padding: 20px;
+    }
+    
+    .calendar-modal {
+        margin: 10px;
+        padding: 20px;
+        max-width: 95%;
+    }
+    
+    .calendar-grid {
+        gap: 3px;
+    }
+    
+    .calendar-day {
+        font-size: 0.9rem;
+        padding: 8px 4px;
+    }
+    
+    .calendar-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    
+    #currentMonth {
+        font-size: 1.3rem;
+    }
+    
+    .appointment-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .back-btn,
+    .continue-btn {
+        flex: none;
+        width: 100%;
     }
     
     .lightbox-prev,

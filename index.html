@@ -111,14 +111,84 @@
         </section>
     </div>
 
+    <!-- Calendar Modal -->
+    <div class="modal-overlay" id="calendarModal">
+        <div class="modal-content calendar-modal">
+            <div class="modal-header">
+                <h3>Select Appointment Date</h3>
+                <button class="modal-close" id="closeCalendarModal">&times;</button>
+            </div>
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button class="calendar-nav" id="prevMonth">&lt;</button>
+                    <h4 id="currentMonth"></h4>
+                    <button class="calendar-nav" id="nextMonth">&gt;</button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar days will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Time and Address Selection (hidden initially) -->
+            <div class="appointment-details" id="appointmentDetails" style="display: none;">
+                <div class="selected-date">
+                    <h4>Selected Date: <span id="selectedDateText"></span></h4>
+                </div>
+                
+                <div class="form-group">
+                    <label for="appointmentTime">Select Time *</label>
+                    <select id="appointmentTime" name="time" required>
+                        <option value="">Choose a time</option>
+                        <option value="09:00">9:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="13:00">1:00 PM</option>
+                        <option value="14:00">2:00 PM</option>
+                        <option value="15:00">3:00 PM</option>
+                        <option value="16:00">4:00 PM</option>
+                        <option value="17:00">5:00 PM</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="appointmentAddress">Service Location *</label>
+                    <select id="appointmentAddress" name="address" required>
+                        <option value="">Choose location</option>
+                        <option value="mobile">Mobile Service (We come to you)</option>
+                        <option value="shop">Our Shop Location</option>
+                    </select>
+                </div>
+                
+                <div class="appointment-actions">
+                    <button type="button" class="back-btn" id="backToCalendar">Back to Calendar</button>
+                    <button type="button" class="continue-btn" id="continueToContact">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Contact Modal -->
     <div class="modal-overlay" id="contactModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Book Your Appointment</h3>
+                <h3>Complete Your Booking</h3>
                 <button class="modal-close" id="closeModal">&times;</button>
             </div>
             <form class="contact-form" id="contactForm">
+                <div class="appointment-summary" id="appointmentSummary" style="display: none;">
+                    <h4>Appointment Details</h4>
+                    <div class="summary-item">
+                        <strong>Date:</strong> <span id="summaryDate"></span>
+                    </div>
+                    <div class="summary-item">
+                        <strong>Time:</strong> <span id="summaryTime"></span>
+                    </div>
+                    <div class="summary-item">
+                        <strong>Location:</strong> <span id="summaryLocation"></span>
+                    </div>
+                </div>
+                
                 <div class="form-group">
                     <label for="name">Name *</label>
                     <input type="text" id="name" name="name" required>
@@ -135,7 +205,7 @@
                     <label for="message">Message</label>
                     <textarea id="message" name="message" rows="4" placeholder="Tell us about your vehicle and preferred services..."></textarea>
                 </div>
-                <button type="submit" class="submit-btn">Send Request</button>
+                <button type="submit" class="submit-btn">Book Appointment</button>
             </form>
         </div>
     </div>

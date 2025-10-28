@@ -4,6 +4,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
     initModal();
+    initCalendar();
     initLightbox();
     initSmoothScroll();
     initFormSubmission();
@@ -13,22 +14,38 @@ document.addEventListener('DOMContentLoaded', function() {
 // Modal functionality for contact form
 function initModal() {
     const bookNowBtn = document.getElementById('bookNowBtn');
+    const calendarModal = document.getElementById('calendarModal');
     const contactModal = document.getElementById('contactModal');
+    const closeCalendarModal = document.getElementById('closeCalendarModal');
     const closeModal = document.getElementById('closeModal');
     
-    // Open modal when Book Now button is clicked
+    // Open calendar modal when Book Now button is clicked
     bookNowBtn.addEventListener('click', function() {
-        contactModal.classList.add('active');
+        calendarModal.classList.add('active');
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
     });
     
-    // Close modal when close button is clicked
+    // Close calendar modal when close button is clicked
+    closeCalendarModal.addEventListener('click', function() {
+        calendarModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    });
+    
+    // Close contact modal when close button is clicked
     closeModal.addEventListener('click', function() {
         contactModal.classList.remove('active');
         document.body.style.overflow = 'auto';
     });
     
-    // Close modal when clicking outside the modal content
+    // Close calendar modal when clicking outside the modal content
+    calendarModal.addEventListener('click', function(e) {
+        if (e.target === calendarModal) {
+            calendarModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    });
+    
+    // Close contact modal when clicking outside the modal content
     contactModal.addEventListener('click', function(e) {
         if (e.target === contactModal) {
             contactModal.classList.remove('active');
@@ -36,13 +53,208 @@ function initModal() {
         }
     });
     
-    // Close modal with Escape key
+    // Close modals with Escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && contactModal.classList.contains('active')) {
-            contactModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
+        if (e.key === 'Escape') {
+            if (calendarModal.classList.contains('active')) {
+                calendarModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            } else if (contactModal.classList.contains('active')) {
+                contactModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
         }
     });
+}
+
+// Calendar functionality
+function initCalendar() {
+    let currentDate = new Date();
+    let selectedDate = null;
+    let selectedTime = '';
+    let selectedAddress = '';
+    
+    const calendarGrid = document.getElementById('calendarGrid');
+    const currentMonthElement = document.getElementById('currentMonth');
+    const prevMonthBtn = document.getElementById('prevMonth');
+    const nextMonthBtn = document.getElementById('nextMonth');
+    const appointmentDetails = document.getElementById('appointmentDetails');
+    const selectedDateText = document.getElementById('selectedDateText');
+    const appointmentTime = document.getElementById('appointmentTime');
+    const appointmentAddress = document.getElementById('appointmentAddress');
+    const backToCalendarBtn = document.getElementById('backToCalendar');
+    const continueBtn = document.getElementById('continueToContact');
+    
+    // Month names
+    const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    
+    // Day names
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    
+    // Initialize calendar
+    function renderCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        
+        currentMonthElement.textContent = `${monthNames[month]} ${year}`;
+        
+        // Clear calendar grid
+        calendarGrid.innerHTML = '';
+        
+        // Add day headers
+        dayNames.forEach(day => {
+            const dayHeader = document.createElement('div');
+            dayHeader.className = 'calendar-day-header';
+            dayHeader.textContent = day;
+            calendarGrid.appendChild(dayHeader);
+        });
+        
+        // Get first day of month and number of days
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDayOfWeek = firstDay.getDay();
+        
+        // Add empty cells for days before the first day of the month
+        for (let i = 0; i < startingDayOfWeek; i++) {
+            const emptyDay = document.createElement('div');
+            emptyDay.className = 'calendar-day other-month';
+            emptyDay.textContent = '';
+            calendarGrid.appendChild(emptyDay);
+        }
+        
+        // Add days of the month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'calendar-day';
+            dayElement.textContent = day;
+            
+            const date = new Date(year, month, day);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            // Disable past dates
+            if (date < today) {
+                dayElement.classList.add('disabled');
+            } else {
+                dayElement.addEventListener('click', function() {
+                    selectDate(date, dayElement);
+                });
+            }
+            
+            calendarGrid.appendChild(dayElement);
+        }
+    }
+    
+    // Select date function
+    function selectDate(date, element) {
+        // Remove previous selection
+        const previousSelected = calendarGrid.querySelector('.calendar-day.selected');
+        if (previousSelected) {
+            previousSelected.classList.remove('selected');
+        }
+        
+        // Add selection to clicked element
+        element.classList.add('selected');
+        selectedDate = date;
+        
+        // Show appointment details
+        appointmentDetails.style.display = 'block';
+        selectedDateText.textContent = date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        // Reset time and address selections
+        appointmentTime.value = '';
+        appointmentAddress.value = '';
+        selectedTime = '';
+        selectedAddress = '';
+        updateContinueButton();
+    }
+    
+    // Update continue button state
+    function updateContinueButton() {
+        const isValid = selectedTime && selectedAddress;
+        continueBtn.disabled = !isValid;
+    }
+    
+    // Navigation event listeners
+    prevMonthBtn.addEventListener('click', function() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    });
+    
+    nextMonthBtn.addEventListener('click', function() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    });
+    
+    // Time selection
+    appointmentTime.addEventListener('change', function() {
+        selectedTime = this.value;
+        updateContinueButton();
+    });
+    
+    // Address selection
+    appointmentAddress.addEventListener('change', function() {
+        selectedAddress = this.value;
+        updateContinueButton();
+    });
+    
+    // Back to calendar
+    backToCalendarBtn.addEventListener('click', function() {
+        appointmentDetails.style.display = 'none';
+        const selectedDay = calendarGrid.querySelector('.calendar-day.selected');
+        if (selectedDay) {
+            selectedDay.classList.remove('selected');
+        }
+        selectedDate = null;
+    });
+    
+    // Continue to contact form
+    continueBtn.addEventListener('click', function() {
+        if (selectedDate && selectedTime && selectedAddress) {
+            // Close calendar modal
+            const calendarModal = document.getElementById('calendarModal');
+            calendarModal.classList.remove('active');
+            
+            // Open contact modal with appointment details
+            const contactModal = document.getElementById('contactModal');
+            const appointmentSummary = document.getElementById('appointmentSummary');
+            const summaryDate = document.getElementById('summaryDate');
+            const summaryTime = document.getElementById('summaryTime');
+            const summaryLocation = document.getElementById('summaryLocation');
+            
+            // Populate summary
+            summaryDate.textContent = selectedDate.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            const timeText = appointmentTime.options[appointmentTime.selectedIndex].text;
+            summaryTime.textContent = timeText;
+            
+            const locationText = appointmentAddress.options[appointmentAddress.selectedIndex].text;
+            summaryLocation.textContent = locationText;
+            
+            // Show summary
+            appointmentSummary.style.display = 'block';
+            
+            // Open contact modal
+            contactModal.classList.add('active');
+        }
+    });
+    
+    // Initialize calendar
+    renderCalendar();
 }
 
 // Lightbox functionality for gallery images
@@ -164,21 +376,47 @@ function initFormSubmission() {
             message: formData.get('message')
         };
         
+        // Get appointment details from summary
+        const summaryDate = document.getElementById('summaryDate');
+        const summaryTime = document.getElementById('summaryTime');
+        const summaryLocation = document.getElementById('summaryLocation');
+        
+        const appointmentData = {
+            date: summaryDate ? summaryDate.textContent : '',
+            time: summaryTime ? summaryTime.textContent : '',
+            location: summaryLocation ? summaryLocation.textContent : ''
+        };
+        
         // Validate form data
         if (!data.name || !data.phone || !data.email) {
             showNotification('Please fill in all required fields.', 'error');
             return;
         }
         
+        // Validate appointment data
+        if (!appointmentData.date || !appointmentData.time || !appointmentData.location) {
+            showNotification('Please complete the appointment selection first.', 'error');
+            return;
+        }
+        
         // Simulate form submission (replace with actual API call)
-        showNotification('Thank you! We\'ll contact you soon to schedule your appointment.', 'success');
+        const appointmentMessage = `Appointment Details:\nDate: ${appointmentData.date}\nTime: ${appointmentData.time}\nLocation: ${appointmentData.location}\n\nCustomer Details:\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${data.email}\nMessage: ${data.message || 'No additional message'}`;
+        
+        console.log('Appointment Booking:', appointmentMessage);
+        
+        showNotification('Thank you! Your appointment has been booked successfully. We\'ll contact you soon to confirm.', 'success');
         
         // Reset form and close modal
         contactForm.reset();
+        const appointmentSummary = document.getElementById('appointmentSummary');
+        if (appointmentSummary) {
+            appointmentSummary.style.display = 'none';
+        }
+        
         setTimeout(() => {
             contactModal.classList.remove('active');
             document.body.style.overflow = 'auto';
-        }, 2000);
+        }, 3000);
     });
 }
 
