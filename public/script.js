@@ -1,15 +1,21 @@
 // Preeminent Car Detailing - Interactive JavaScript
 // Handles modal functionality, lightbox, smooth scrolling, and form submission
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all functionality
-    initModal();
-    initCalendar();
-    initLightbox();
-    initSmoothScroll();
-    initFormSubmission();
-    initScrollAnimations();
-});
+// Only run on client side to avoid hydration issues
+if (typeof window !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add a small delay to ensure DOM is fully ready
+        setTimeout(() => {
+            // Initialize all functionality
+            initModal();
+            initCalendar();
+            initLightbox();
+            initSmoothScroll();
+            initFormSubmission();
+            initScrollAnimations();
+        }, 100);
+    });
+}
 
 // Modal functionality for contact form
 function initModal() {
@@ -19,8 +25,15 @@ function initModal() {
     const closeCalendarModal = document.getElementById('closeCalendarModal');
     const closeModal = document.getElementById('closeModal');
     
+    // Ensure elements exist before adding event listeners
+    if (!bookNowBtn || !calendarModal || !contactModal) {
+        console.error('Required modal elements not found');
+        return;
+    }
+    
     // Open calendar modal when Book Now button is clicked
-    bookNowBtn.addEventListener('click', function() {
+    bookNowBtn.addEventListener('click', function(e) {
+        e.preventDefault();
         calendarModal.classList.add('active');
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
     });
@@ -269,13 +282,29 @@ function initLightbox() {
     let currentImageIndex = 0;
     let galleryImages = [];
     
-    // Collect all gallery images
+    // Collect all gallery images and videos
     galleryItems.forEach((item, index) => {
         const img = item.querySelector('img');
+        const video = item.querySelector('video');
+        
         if (img) {
             galleryImages.push({
                 src: img.src,
-                alt: img.alt
+                alt: img.alt,
+                type: 'image'
+            });
+            
+            // Add click event to each gallery item
+            item.addEventListener('click', function() {
+                currentImageIndex = index;
+                openLightbox();
+            });
+        } else if (video) {
+            galleryImages.push({
+                src: video.src || video.querySelector('source').src,
+                alt: video.alt || 'Video content',
+                type: 'video',
+                poster: video.poster
             });
             
             // Add click event to each gallery item
@@ -288,8 +317,42 @@ function initLightbox() {
     
     function openLightbox() {
         if (galleryImages[currentImageIndex]) {
-            lightboxImage.src = galleryImages[currentImageIndex].src;
-            lightboxImage.alt = galleryImages[currentImageIndex].alt;
+            const currentItem = galleryImages[currentImageIndex];
+            
+            if (currentItem.type === 'video') {
+                // Hide image, show video
+                lightboxImage.style.display = 'none';
+                
+                // Create video element if it doesn't exist
+                let lightboxVideo = document.getElementById('lightboxVideo');
+                if (!lightboxVideo) {
+                    lightboxVideo = document.createElement('video');
+                    lightboxVideo.id = 'lightboxVideo';
+                    lightboxVideo.controls = true;
+                    lightboxVideo.style.cssText = `
+                        max-width: 100%;
+                        max-height: 100%;
+                        border-radius: 10px;
+                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+                    `;
+                    lightboxImage.parentNode.appendChild(lightboxVideo);
+                }
+                
+                lightboxVideo.src = currentItem.src;
+                lightboxVideo.poster = currentItem.poster;
+                lightboxVideo.style.display = 'block';
+            } else {
+                // Hide video, show image
+                const lightboxVideo = document.getElementById('lightboxVideo');
+                if (lightboxVideo) {
+                    lightboxVideo.style.display = 'none';
+                }
+                
+                lightboxImage.src = currentItem.src;
+                lightboxImage.alt = currentItem.alt;
+                lightboxImage.style.display = 'block';
+            }
+            
             lightboxModal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -302,14 +365,12 @@ function initLightbox() {
     
     function showNextImage() {
         currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
-        lightboxImage.src = galleryImages[currentImageIndex].src;
-        lightboxImage.alt = galleryImages[currentImageIndex].alt;
+        openLightbox();
     }
     
     function showPrevImage() {
         currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
-        lightboxImage.src = galleryImages[currentImageIndex].src;
-        lightboxImage.alt = galleryImages[currentImageIndex].alt;
+        openLightbox();
     }
     
     // Event listeners for lightbox controls
@@ -525,8 +586,10 @@ function initLazyLoading() {
     }
 }
 
-// Initialize lazy loading when DOM is ready
-document.addEventListener('DOMContentLoaded', initLazyLoading);
+// Initialize lazy loading when DOM is ready (client-side only)
+if (typeof window !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', initLazyLoading);
+}
 
 // Performance optimization: Debounce scroll events
 function debounce(func, wait) {
@@ -541,31 +604,6 @@ function debounce(func, wait) {
     };
 }
 
-// Add scroll-based animations with debouncing
-const debouncedScrollHandler = debounce(() => {
-    const scrolled = window.pageYOffset;
-    const parallax = document.querySelector('.background-image');
-    
-    if (parallax) {
-        const speed = scrolled * 0.5;
-        parallax.style.transform = `translateY(${speed}px)`;
-    }
-}, 10);
+// Removed scroll handler to prevent hydration issues
 
-window.addEventListener('scroll', debouncedScrollHandler);
-
-// Add loading state for better UX
-window.addEventListener('load', function() {
-    document.body.classList.add('loaded');
-    
-    // Add fade-in animation to main content
-    const mainContent = document.querySelector('.main-container');
-    if (mainContent) {
-        mainContent.style.opacity = '0';
-        mainContent.style.transition = 'opacity 0.5s ease';
-        
-        setTimeout(() => {
-            mainContent.style.opacity = '1';
-        }, 100);
-    }
-});
+// Removed problematic loading animation that causes hydration mismatch

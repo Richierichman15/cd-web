@@ -128,12 +128,16 @@ export default function RootLayout({
             <button className="lightbox-close" id="closeLightbox">&times;</button>
             <button className="lightbox-prev" id="prevBtn">‹</button>
             <button className="lightbox-next" id="nextBtn">›</button>
-            <img id="lightboxImage" src="" alt="" />
+            <img id="lightboxImage" src="/images/before.PNG" alt="Gallery image" />
           </div>
         </div>
 
         {/* JavaScript */}
-        <script src="/script.js" async></script>
+        <script 
+          src="/script.js" 
+          async
+          suppressHydrationWarning
+        ></script>
       </body>
     </html>
   )
