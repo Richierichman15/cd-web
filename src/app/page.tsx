@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import './globals.css'
 
@@ -146,6 +147,14 @@ export default function Home() {
         <div className="dark-gradient"></div>
       </div>
 
+      {/* Navigation */}
+      <nav className="main-nav">
+        <div className="nav-container">
+          <Link href="/" className="nav-link active">Home</Link>
+          <Link href="/pricing" className="nav-link">Pricing</Link>
+        </div>
+      </nav>
+
       {/* Logo Section - Centered in Top Half */}
       <section className="logo-section" id="home">
         <div className="logo-container">
@@ -224,21 +233,6 @@ export default function Home() {
               <div className="gallery-overlay">
                 <span className="gallery-icon">🔍</span>
                 <span className="gallery-label">Comparison</span>
-              </div>
-            </div>
-            <div className="gallery-item" data-type="video">
-              <video 
-                className="gallery-video"
-                controls
-                preload="metadata"
-                poster="/images/before.PNG"
-              >
-                <source src="/images/video.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <div className="gallery-overlay">
-                <span className="gallery-icon">▶️</span>
-                <span className="gallery-label">Video</span>
               </div>
             </div>
           </div>
