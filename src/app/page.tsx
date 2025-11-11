@@ -114,15 +114,34 @@ export default function Home() {
     script.async = true;
     document.body.appendChild(script);
     
+    // Ensure background video plays
+    const video = document.querySelector('.background-video') as HTMLVideoElement;
+    if (video) {
+      video.play().catch(err => {
+        console.log('Video autoplay prevented:', err);
+      });
+    }
+    
     return () => {
-      document.body.removeChild(script);
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
     };
   }, []);
 
   return (
     <div className="main-container">
-      {/* Background Image with Dark Overlay */}
+      {/* Background Video with Dark Overlay */}
       <div className="background-overlay">
+        <video 
+          className="background-video"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src="/images/video.mp4" type="video/mp4" />
+        </video>
         <div className="background-image"></div>
         <div className="dark-gradient"></div>
       </div>
