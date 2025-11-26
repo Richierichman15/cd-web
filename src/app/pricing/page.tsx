@@ -174,6 +174,34 @@ export default function Pricing() {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="main-footer">
+        <div className="footer-container">
+          <div className="footer-content">
+            <div className="footer-brand">
+              <h3 className="footer-logo">PREEMINENT</h3>
+              <p className="footer-tagline">Professional Car Detailing</p>
+            </div>
+            <div className="footer-links">
+              <a 
+                href="https://linktr.ee/Preeminent.Detailing" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="footer-linktree-link"
+              >
+                <span className="linktree-icon">🔗</span>
+                <span className="linktree-text">Connect With Us</span>
+              </a>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p className="footer-copyright">
+              &copy; {new Date().getFullYear()} Preeminent Detailing. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
